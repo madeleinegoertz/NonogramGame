@@ -19,8 +19,9 @@ def main():
     #                              "lib\\" + name + "ColClues.txt"
     #                              ))
     #     tests[i].priority_solve(update_solve=True)
-    p = Puzzle("50by50", "lib\\50by50RowClues.txt", "lib\\50by50ColClues.txt")
-    p.file_print(p.__str__())
+    p = Puzzle("5by5", "lib\\5by5RowClues.txt", "lib\\5by5ColClues.txt")
+    s = Solver(p)
+    s.slow_solve()
 
 
 if __name__ == "__main__":

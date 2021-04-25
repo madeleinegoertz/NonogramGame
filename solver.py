@@ -138,20 +138,25 @@ class Solver(object):
 
     # Returns list of sets of k elements from data, given that data is sorted ascending
     def _combin(self, k: int, data: List[int]) -> List[List[int]]:
-        combinations = [[]]
-        combin = [] * k
+        # list of lists, where each sublist is a valid combination
+        combinations = []
+        # one individual valid combination
+        combin = []
         # Initialize with first lexicographic combination
         for i in range(k):
-            combin[i] = data[i]
-        while sum(combin) < self._sum_last_combin(k, data):
+            combin.append(data[i])
+        # last lexicographic combo sum
+        sum_last = self._sum_last_combin(k, data)
+        # loop while the current sum is less than the last sum
+        while sum(combin) < sum_last:
             combinations.append(combin.copy())
             # Generate next combination in lexicographic order
             t = k - 1
             while not t == 0 and combin[t] == data[-k + t]:
                 t -= 1
-            combin[t] = data[combin[t].index() + 1]
+            combin[t] = data[data.index(combin[t]) + 1]
             for i in range(t + 1, k):
-                combin[i] = data[combin[i - 1].index() + 1]
+                combin[i] = data[data.index(combin[i - 1]) + 1]
         combinations.append(combin.copy())
         return combinations
 
