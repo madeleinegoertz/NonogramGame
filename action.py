@@ -2,7 +2,7 @@ from typing import List
 
 class Action(object):
 
-    def __init__(self, is_row: bool, indices: list = List[int]):
+    def __init__(self, is_row: bool, indices = []):
         self._is_row = is_row
         self._indices = indices
 

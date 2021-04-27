@@ -16,7 +16,7 @@ class Puzzle(object):
         self._col_clues = self._get_clues_from_file(col_clues_path)
         self.rows = len(self._row_clues)
         self.cols = len(self._col_clues)
-        self._grid = [[Square()] * self.cols] * self.rows
+        self._grid = [[Square() for r in range(self.cols)] for r in range(self.rows)]
         self._outF = open("out\\" + str(name) + ".txt", "a")
 
     # Returns a list of lists, where clues[] holds one line of clues, 
@@ -30,8 +30,6 @@ class Puzzle(object):
             clues.append(num_ints)
         return clues
             
-
-
     # True if the configuration of the line generates the correct clues. Note that while
     # one individual line may return that it's correct, it may not be "correct" in the
     # entire context of the puzzle.
@@ -105,33 +103,33 @@ class Puzzle(object):
         # Add all of the column clue labels
         max_num_col_clues = self._max_num_clues(self._col_clues)
         col_clue_space = self._max_digits(self._col_clues) + 1
+        ccs = "%" + str(col_clue_space) + "s"
         grid_cols_spaced = (self.rows // SQUARES_PER_SECTION + self.rows + 1) * col_clue_space
         for r in range(max_num_col_clues):  # iterate through the rows of col clues
             out += " " * row_clue_space  # blank space to accommodate row clues
             for c in range(self.cols):  # iterate through each col to get the clue
                 clue_val = self._clue_val(c, r, max_num_col_clues, self._col_clues)
                 if c % SQUARES_PER_SECTION == 0:
-                    out += ("%" + str(col_clue_space) + "s") % VERTICAL_DIVIDER
-                out += ("%" + str(col_clue_space) + "s") \
-                    % (" " if clue_val == 0 else str(clue_val))  # lower justify
-            out += ("%" + str(col_clue_space) + "s\n") % VERTICAL_DIVIDER
+                    out += ccs % VERTICAL_DIVIDER
+                out += ccs % (" " if clue_val == 0 else str(clue_val))  # lower justify
+            out += ccs % VERTICAL_DIVIDER + "\n"
         # Now onto the row clues and the grid
         hor_div_line = HORIZONTAL_DIVIDER * (row_clue_space + grid_cols_spaced + 1) + "\n"
         for r in range(self.rows):  # iterate through the rows in the puzzle
             if r % SQUARES_PER_SECTION == 0:  # Add horizontal divider if we're at the end of a section
                 out += hor_div_line
             # Add the row clues
-            for c in range(max_num_row_clues):  # iterate through each row clue
-                clue_val = self._clue_val(r, c, max_num_row_clues, self._row_clues)
-                out += ("%" + str(max_digits_in_row_clues) + "s") \
-                    % (" " if clue_val == 0 else clue_val)  # lower justify
+            for i in range(max_num_row_clues):  # iterate through each row clue
+                clue_val = self._clue_val(r, i, max_num_row_clues, self._row_clues)
+                rcs = "%" + str(max_digits_in_row_clues) + "s"
+                out += rcs % (" " if clue_val == 0 else clue_val)  # lower justify
             # Add values from grid
             for c in range(self.cols):
                 if c % SQUARES_PER_SECTION == 0:  # Add vertical dividing line if at end of section
-                    out += ("%" + str(col_clue_space) + "s") % VERTICAL_DIVIDER
-                out += ("%" + str(col_clue_space) + "s") % self._grid[r][c]
+                    out += ccs % VERTICAL_DIVIDER
+                out += ccs % self._grid[r][c].__str__()
             # Add end vertical line
-            out += ("%" + str(col_clue_space) + "s\n") % VERTICAL_DIVIDER
+            out += ccs % VERTICAL_DIVIDER + "\n"
         # Add bottom horizontal line
         out += hor_div_line
         return out
@@ -180,7 +178,7 @@ class Puzzle(object):
         val = 0
         offset = max_num_clues - len(clues[num_clue])
         if num_chunk >= offset:
-            val = clues[num_clue][0]
+            val = clues[num_clue][num_chunk - offset]
         return val
 
     # Returns the greatest number of clues in either the row clues or col clues, depending

@@ -2,15 +2,11 @@ from enum import Enum
 
 
 class State(Enum):
-    filled = None,
-    blank = None,
-    unknown = None
-
+    filled = "O",
+    blank = ".",
+    unknown = " "
 
 class Square(object):
-    FILLED = "O"
-    BLANK = "."
-    UNKNOWN = " "
 
     def __init__(self, state: State = State.unknown):
         self._state = state
@@ -40,10 +36,4 @@ class Square(object):
         self._state = State.blank
 
     def __str__(self) -> str:
-        if self._state == State.filled:
-            out = self.FILLED
-        elif self._state == State.blank:
-            out = self.BLANK
-        else:  # self.state == State.unknown
-            out = self.UNKNOWN
-        return out
+        return self._state.value

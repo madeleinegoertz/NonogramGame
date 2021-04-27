@@ -49,13 +49,13 @@ class Solver(object):
             self._puzzle.console_print(self._puzzle.__str__())
             r = 0
             while not self._puzzle.is_solved() and r < self._puzzle.rows:
-                self._puzzle.print("r = " + str(r))
+                # self._puzzle.print("r = " + str(r))
                 self._update_line(r, True, False)
                 i += 1
                 r += 1
             c = 0
             while not self._puzzle.is_solved() and c < self._puzzle.cols:
-                self._puzzle.print("c = " + str(c))
+                # self._puzzle.print("c = " + str(c))
                 self._update_line(c, False, False)
                 i += 1
                 c += 1
@@ -100,7 +100,7 @@ class Solver(object):
             k = self._puzzle.sum_clues_in_line(line_num, is_row) \
                 - self._puzzle.num_filled_squares_in_line(line_num, is_row)  # number of squares to fill
             filled_square_guess = self._combin(k, unknown_squares)  # sets of all indices that could be filled
-            line_guesses = [[]]  # all possible lines as lists of Squares. All possible, not all valid
+            line_guesses = []  # all possible lines as lists of Squares. All possible, not all valid
             # Populate all possible lines as Square lists
             for i in range(len(filled_square_guess)):  # iterate through every line combination
                 new_guess = self._puzzle.get_line(line_num, is_row)
@@ -117,7 +117,7 @@ class Solver(object):
                     line_guesses.append(new_guess)
             # If square is same across all possible valid lines, update grid
             if len(line_guesses) > 0:
-                new_action = Action(not is_row)
+                new_action = Action(is_row)
                 for i in range(len(line_guesses[0])):
                     is_square_same = self._square_same_across_guesses(i, line_guesses)
                     if is_square_same:
@@ -128,11 +128,11 @@ class Solver(object):
                             self._puzzle.set_filled(first, second)
                         else:
                             self._puzzle.set_blank(first, second)
-                        try:
-                            unknown_squares.index(i)
-                            new_action.add_index(i)
-                        except ValueError:
-                            pass
+                        # try:
+                        #     unknown_squares.index(i)
+                        #     new_action.add_index(i)
+                        # except ValueError:
+                        #     pass
                 if new_action.get_num_indices() > 0 and update_actions:
                     self._actions.insert(0, new_action)
 

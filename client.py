@@ -19,7 +19,7 @@ def main():
     #                              "lib\\" + name + "ColClues.txt"
     #                              ))
     #     tests[i].priority_solve(update_solve=True)
-    p = Puzzle("5by5", "lib\\5by5RowClues.txt", "lib\\5by5ColClues.txt")
+    p = Puzzle("20by20", "lib\\20by20RowClues.txt", "lib\\20by20ColClues.txt")
     s = Solver(p)
     s.slow_solve()
 
