@@ -13,9 +13,10 @@ class Solver(object):
     def __init__(self, puzzle: Puzzle):
         self._puzzle = puzzle
         self._actions = []
-        # still don't quite understand what the point of this is. 
-        # self._row_priority = [puzzle.gr][2]
-        # self._col_priority = [puzzle.cols][2]
+        # still don't quite understand what the point of this is. Just l to r, t to b?
+        # using argument unpacking to get list from range. 
+        self._row_priority = [*range(puzzle.rows)]
+        self._col_priority = [*range(puzzle.cols)]
 
     # Solve by checking rows and cols in alternating priority order
     # if update_solve: will update priority order after each iteration

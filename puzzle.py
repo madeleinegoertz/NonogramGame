@@ -64,7 +64,7 @@ class Puzzle(object):
 
     # Returns a copy of the requested line in the grid, not a reference to it.
     def get_line(self, line_num: int, is_row: bool) -> List[Square]:
-        line = [Square()] * (self.cols if is_row else self.rows)
+        line = [Square() for i in range(self.cols if is_row else self.rows)]
         for i in range(len(line)):
             line[i] = self._grid[line_num if is_row else i][i if is_row else line_num].clone()
         return line
